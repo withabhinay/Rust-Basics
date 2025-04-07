@@ -283,4 +283,103 @@ enum with associated arguments
     In Rust, each value has a single owner, and when the owner goes out of scope, the value is automatically deallocated.
     Borrowing allows you to temporarily use a value without taking ownership of it. 
     You can borrow a value either mutably or immutably, but you cannot have mutable and immutable borrows at the same time.
+
+    Ownership rules:
+    1. Each value in Rust has a single owner. (only one owner at a time)
+    2. When the owner goes out of scope, the value is dropped (deallocated).
+
+    example of ownership:
+    fn main() {
+        let s1 = String::from("hello");
+        let s2 = s1; // ownership of s1 is moved to s2
+        // println!("{}", s1); // this will cause a compile-time error
+        println!("{}", s2); // this is valid
+    }
+    example of borrowing:
+    fn main() {
+        let s1 = String::from("hello");
+        let len = calculate_length(&s1); // borrow s1
+        println!("The length of '{}' is {}.", s1, len); // s1 is still valid here
+    }
+    fn calculate_length(s: &String) -> usize {
+        s.len()
+    }
+*/
+
+//MOVING -->
+/*
+     fn create_string() {
+        let s1: String = String::from("hello");
+        let s2: String = s1;
+        println!("{}", s1); // this will cause a compile-time error
+        println!("{}", s2); // this is valid
+     }
+     fn main() {
+     create_string();
+     }
+*/
+
+/*
+    fn main() {
+        let s1 =  String::from ("hello");
+        do_something(s1);
+        println!("number uis {}", s1); // this will cause a compile-time error
+    }
+
+    fn do_something(s: String) {
+        println!("{}", s);
+    }
+*/
+
+// if u want to use the value after moving it, u can use the clone method to create a deep copy of the value.
+/*
+    fn main() {
+        let s1 = String::from("hello");
+        let s2 = s1.clone(); // create a deep copy of s1
+        println!("{}", s1); // this is valid
+        println!("{}", s2); // this is also valid
+    }
+*/
+// s1 remains the owner everywhere s2 just borrows the value 
+/* 
+    fn main() {
+        let s1 = String::from("helloworld");
+        do_something(s2:&s1); // pass a reference to s1.. s2 borrows from s1
+        println!("{}", s1); // owned by s1
+    }
+    fn do_something(s2: &String) {
+        println!("{}", s2); //s2 owns the value
+    }
+*/ 
+
+// borrowing to mutate the value --> which means u can change the value of the borrowed variable
+/*
+    fn main() {
+        let mut s1 = String::from("hello");
+        do_something(s2: &mut s1);
+        println!("number uis {}", s1); // this is valid
+    }
+
+    fn do_something(s2: &mut String) {
+        s2.push_str(string: "world");
+        println!("{}", s2); // this is valid
+    }
+*/
+
+// mutable borrowing -->
+  /*
+  
+  Rule of refernces:
+   - at any given time, u can have either one mutable reference or any number of immutable references
+   - References must always be valid
+  */
+
+  //here if s2 has mutable borrow of s1 then s1 cannot be borrowed immutably or even mutably
+/* 
+    fn main() {
+        let mut s1 = String::from("hello");
+        let s2 = &mut s1;
+        let s3 = &s1; // this will cause a compile-time error
+        println!("{}, {}, {}", s1,s2,s3); // this is valid
+    }
 */
